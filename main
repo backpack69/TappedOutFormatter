@@ -1,0 +1,46 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
+
+namespace FormatDeck
+{
+    class Program
+    {
+        public List<string> deck = new List<string>();
+        public List<string> formatedDeck = new List<string>();
+        static void Main(string[] args)
+        {
+            var format = new Program();
+            string pattern = @"\((.*)";
+            Regex rg = new Regex(pattern);
+            using (var reader = File.OpenText(@"C:\Users\Nicholas\Desktop\FormatDeck\deck.txt"))
+            {
+
+                var line = reader.ReadLine();
+                while (line != null)
+                {
+                    format.deck.Add(line);
+                    // Console.WriteLine(line);
+                    line = reader.ReadLine();
+                }
+            }
+
+            for (int i = 0; i < format.deck.Count; i++)
+            {
+                var newLine = "";
+                newLine = Regex.Replace(format.deck[i], pattern, "");
+                Console.WriteLine(newLine);
+                format.formatedDeck.Add(newLine);
+            }
+
+            using (var writer = File.CreateText(@"C:\Users\Nicholas\Desktop\FormatDeck\newdeck.txt"))
+            {
+                for (var index = 0; index < format.formatedDeck.Count; index += 1)
+                {
+                    writer.WriteLine(format.formatedDeck[index]);
+                }
+            }
+        }
+    }
+}
